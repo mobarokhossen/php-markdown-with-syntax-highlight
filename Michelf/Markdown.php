@@ -12,6 +12,7 @@
 #
 namespace Michelf;
 
+use KzykHys\Pygments\Pygments;
 
 #
 # Markdown Parser Class
@@ -2833,8 +2834,19 @@ abstract class _MarkdownExtra_TmpImpl extends \Michelf\Markdown {
 		}
 		$pre_attr_str  = $this->code_attr_on_pre ? $attr_str : '';
 		$code_attr_str = $this->code_attr_on_pre ? '' : $attr_str;
-		$codeblock  = "<pre$pre_attr_str><code$code_attr_str>$codeblock</code></pre>";
-		
+
+		/*********
+		* edit starts by queirozfcom
+		*/
+		if($classname !== ''){
+                    $codeblock = (new \KzykHys\Pygments\Pygments())->highlight(html_entity_decode($codeblock),$classname,'html');
+                }else{
+                    $codeblock  = "<pre$pre_attr_str><code$code_attr_str>$codeblock</code></pre>";
+		}
+		/*********
+		*edit ends
+		*/		
+
 		return "\n\n".$this->hashBlock($codeblock)."\n\n";
 	}
 	protected function _doFencedCodeBlocks_newlines($matches) {
