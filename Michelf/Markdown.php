@@ -970,7 +970,16 @@ class Markdown implements MarkdownInterface {
 		# trim leading newlines and trailing newlines
 		$codeblock = preg_replace('/\A\n+|\n+\z/', '', $codeblock);
 
-		$codeblock = "<pre><code>$codeblock\n</code></pre>";
+                /***
+                 * queirozfcom edit start:
+                 * regular code blocks receive 'nohighlight' class
+                 */
+                
+		$codeblock = "<pre><code class='nohighlight'>$codeblock\n</code></pre>";
+                
+                /**
+                 * edit end
+                 */
 		return "\n\n".$this->hashBlock($codeblock)."\n\n";
 	}
 
@@ -2838,10 +2847,10 @@ abstract class _MarkdownExtra_TmpImpl extends \Michelf\Markdown {
 		/*********
 		* edit starts by queirozfcom
 		*/
-		if($classname !== ''){
-                    $codeblock = (new \KzykHys\Pygments\Pygments())->highlight(html_entity_decode($codeblock),$classname,'html');
+		if($classname === ''){
+                    $codeblock = "<pre><code class='nohighlight'>$codeblock</code></pre>";
                 }else{
-                    $codeblock  = "<pre$pre_attr_str><code$code_attr_str>$codeblock</code></pre>";
+                    $codeblock  = "<pre><code class='lang-$classname'>$codeblock</code></pre>";
 		}
 		/*********
 		*edit ends
@@ -3127,3 +3136,4 @@ abstract class _MarkdownExtra_TmpImpl extends \Michelf\Markdown {
 	}
 
 }
+
